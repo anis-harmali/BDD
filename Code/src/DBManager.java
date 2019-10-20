@@ -1,8 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
 
-import sun.tools.tree.ThisExpression;
-
 public class DBManager {
 	private static DBManager INSTANCE;
 	private List<String> types = new ArrayList<String>();
@@ -40,8 +38,19 @@ public class DBManager {
 	}
 
 	public static void CreateRelation(String nom, int nbcol, List<String> types) {
-		RelDef reldef = new RelDef(nom, nbcol, types);
+		int recordSize=0;
+		for(int i=0;i<nbcol;i++) {
+			if(types.get(i).equals("int")) {
+				recordSize+=4;
+			}else if (types.get(i).equals("float")) {
+				recordSize+=4;
+			}else if (types.get(i).substring(0, 5).equals("string")) {
+				int valeur = Integer.parseInt(types.get(i).substring(6));
+				recordSize+=2*valeur;
+			}
+		}
+		int slotCount=Constants.pageSize/ recordSize;//*8?
+		RelDef reldef = new RelDef(nom, nbcol,types,0,recordSize,slotCount);
 		DBDef.getInstance().addRelation(reldef);
-		DBDef.getInstan
 	}
 }
