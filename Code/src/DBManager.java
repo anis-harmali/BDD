@@ -37,20 +37,23 @@ public class DBManager {
 
 	}
 
+//modif CreateRelation
 	public static void CreateRelation(String nom, int nbcol, List<String> types) {
-		int recordSize=0;
-		for(int i=0;i<nbcol;i++) {
-			if(types.get(i).equals("int")) {
-				recordSize+=4;
-			}else if (types.get(i).equals("float")) {
-				recordSize+=4;
-			}else if (types.get(i).substring(0, 5).equals("string")) {
+		int recordSize = 0;
+		for (int i = 0; i < nbcol; i++) {
+			if (types.get(i).equals("int")) {
+				recordSize += 4;
+			} else if (types.get(i).equals("float")) {
+				recordSize += 4;
+			} else if (types.get(i).substring(0, 5).equals("string")) {
 				int valeur = Integer.parseInt(types.get(i).substring(6));
-				recordSize+=2*valeur;
+				recordSize += 2 * valeur;
 			}
 		}
-		int slotCount=Constants.pageSize/ recordSize;//*8?
-		RelDef reldef = new RelDef(nom, nbcol,types,0,recordSize,slotCount);
+		int slotCount = Constants.pageSize / recordSize;
+		int fileIdx = DBDef.getInstance().getCompteur();
+
+		RelDef reldef = new RelDef(nom, nbcol, types, fileIdx, recordSize, slotCount);
 		DBDef.getInstance().addRelation(reldef);
 	}
 }
