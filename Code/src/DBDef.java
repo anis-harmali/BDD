@@ -1,14 +1,28 @@
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+
 import java.util.List;
 
 
 
-public class DBDef {
+
+public class DBDef implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static DBDef INSTANCE;
 	private List<RelDef> definition;
 	private int compteur;
 	
 	private DBDef() {
+	
 	}
 	
 	public static synchronized DBDef getInstance() {
@@ -21,18 +35,47 @@ public class DBDef {
 			return INSTANCE;
 	}	
 		
-		public void init() {
-			
+		public void init() throws IOException, ClassNotFoundException {
+			File saveFile=new File(Constants.chemin+"/Catalog.def");
+			if (saveFile.exists()) {
+				FileInputStream file=new FileInputStream(saveFile);
+				ObjectInputStream in= new ObjectInputStream(file);
+				DBDef.INSTANCE=(DBDef) in.readObject();
+				in.close();
+				file.close();
+			}	
 		}
 		
-		public void finish() {
+		public void finish() throws IOException {
+			File saveFile=new File(Constants.chemin+"/Catalog.def");
 			
+			FileOutputStream file= new FileOutputStream(saveFile);
+			ObjectOutputStream out= new ObjectOutputStream(file);
+			
+			out.writeObject(DBDef.getInstance());
+			out.close();
+			file.close();
 		}
 		
 		public void addRelation(RelDef a) {
 			definition.add(a);
 			this.compteur++;
 		}
+		
+		public int getCompteur() {
+			return compteur;
+		}
+		public void setCompteur(int compteur) {
+			this.compteur = compteur;
+		}
+		public void setDefinition(List<RelDef> definition) {
+			this.definition = definition;
+		}
+		
+		public List<RelDef> getDefinition() {
+			return definition;
+		}
+		
 		
 		
 }
