@@ -64,3 +64,4 @@ public class DBManager {
 		RelDef reldef = new RelDef(nom, nbcol, types, fileIdx, recordSize, slotCount);
 		DBDef.getInstance().addRelation(reldef);
 	}
+}
