@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,11 +20,19 @@ public class DBManager {
 	}
 
 	public void init() {
-		DBDef.getInstance().init();
+		try {
+			DBDef.getInstance().init();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+
 	}
 
 	public void finish() {
-		DBDef.getInstance().finish();
+		try {
+			DBDef.getInstance().finish();
+		} catch (IOException e) {}
+		
 	}
 
 	public void ProcessCommand(String chaine) {
@@ -36,7 +45,6 @@ public class DBManager {
 		CreateRelation(ch[1], Integer.parseInt(ch[2]), types);
 
 	}
-
 //modif CreateRelation
 	public static void CreateRelation(String nom, int nbcol, List<String> types) {
 		int recordSize = 0;
@@ -56,4 +64,3 @@ public class DBManager {
 		RelDef reldef = new RelDef(nom, nbcol, types, fileIdx, recordSize, slotCount);
 		DBDef.getInstance().addRelation(reldef);
 	}
-}
