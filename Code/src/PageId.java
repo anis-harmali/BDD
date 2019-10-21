@@ -17,10 +17,6 @@ public class PageId {
 	}
 
 	boolean equals(PageId id2) {
-		if (id2 == null)
-			return true;
-		else {
 			return this.fileIdx == id2.fileIdx && this.pageIdx == id2.pageIdx;
-		}
 	}
 }
