@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class BufferManager {
 	private static BufferManager INSTANCE;
 	private ArrayList<Frame> bufferpool;
-	
+/* 	System.out.println(bu3.getChar()); **/
 	private BufferManager() {
 		bufferpool = new ArrayList<Frame>();
 		for (int i=0; i<Constants.frameCount ; i++)	{
