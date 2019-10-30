@@ -81,14 +81,14 @@ public class HeapFile {
 				 if(buffer.getInt(i)==(byte)1) {
 					
 					 Record record = new Record();
-					 record = readRecordFromBuffer(buffer,i );
+					 //record = readRecordFromBuffer(buffer,i );
 				
 					 records.add(record);
 					
 					 
 		   	 }
 			 }
-			 bufferManager.freePage(iPageId, 0);
+			 bufferManager.freePage(pageId, 0);
 			 return records;
 		}
 
