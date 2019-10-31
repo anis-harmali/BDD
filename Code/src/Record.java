@@ -16,6 +16,10 @@ public class Record {
 		this.reldef = reldef;
 		values = new ArrayList<String>();
 	}
+	
+	public List<String> getValues() {
+		return values;
+	}
 
 	public void WriteToBuffer(ByteBuffer buff, int position) {
 		buff.position(position);
