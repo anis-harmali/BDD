@@ -46,7 +46,7 @@ public class DBManager {
 		CreateRelation(ch[1], Integer.parseInt(ch[2]), types);
 
 	}
-//modif CreateRelation
+
 	public static void CreateRelation(String nom, int nbcol, List<String> types) {
 		int recordSize = 0;
 		for (int i = 0; i < nbcol; i++) {
@@ -65,5 +65,11 @@ public class DBManager {
 		RelDef reldef = new RelDef(nom, nbcol, types, fileIdx, recordSize, slotCount);
 		DBDef.getInstance().addRelation(reldef);
 		FileManager.getInstance().CreateRelationFile(reldef);
+	}
+	
+	public void Clean() throws IOException {
+		BufferManager.getInstance().raz();
+		FileManager.getInstance().raz();
+		DBDef.getInstance().raz();
 	}
 }
