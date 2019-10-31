@@ -12,7 +12,7 @@ public class HeapFile {
 	public HeapFile(RelDef reldef) {
 		this.reldef = reldef;
 	}
-	
+
 	public RelDef getReldef() {
 		return reldef;
 	}
@@ -39,7 +39,7 @@ public class HeapFile {
 
 		buf.putInt(nbpages);
 		buf.putInt(reldef.getSlotCount());
-		//A VERIFIER
+		// A VERIFIER
 		file.close();
 		return pi;
 	}
@@ -75,45 +75,43 @@ public class HeapFile {
 		return new Rid(pageid, reldef.getSlotCount());
 	}
 
-	 public ArrayList<Record> getRecordsInDataPage(PageId pageId) throws IOException{
-			
-			ArrayList<Record> records = new ArrayList<Record>();
-			
-			ByteBuffer buffer = buffermanager.getPage(pageId);
-			
-			 for (int i = 0; i < reldef.getSlotCount(); i++) {
-				
-				 	
-				 if(buffer.getInt(i)==(byte)1) {
-					
-					 Record record = new Record();
-					 //record = readRecordFromBuffer(buffer,i );
-				
-					 records.add(record);
-					
-					 
-		   	 }
-			 }
-			 buffermanager.freePage(pageId, 0);
-			 return records;
-		}
-		
-	public Rid InsertRecord(Record record) throws IOException {
-		 Rid rid = new Rid();
-		 
-		 
-		 
-		 return rid;
-	 }
-	 
-	 
-	 public ArrayList<Record> GetAllRecords() throws IOException {
-		 ArrayList<Record> listederecord = new ArrayList<Record>();
-		 
-		 
-		 
-		 return listederecord;
-	 }
+	public ArrayList<Record> getRecordsInDataPage(PageId pageId) throws IOException {
 
+		ArrayList<Record> records = new ArrayList<Record>();
+
+		ByteBuffer buffer = buffermanager.getPage(pageId);
+
+		for (int i = 0; i < reldef.getSlotCount(); i++) {
+
+			if (buffer.getInt(i) == (byte) 1) {
+
+				Record record = new Record();
+				// record = readRecordFromBuffer(buffer,i );
+
+				records.add(record);
+
+			}
+		}
+		buffermanager.freePage(pageId, 0);
+		return records;
+	}
+
+	public Rid InsertRecord(Record record) throws IOException {
+		Rid rid = new Rid();
+		rid = writeRecordToDataPage(record, getFreeDataPageId());
+		return rid;
+	}
+
+	public ArrayList<Record> GetAllRecords() throws IOException {
+		ArrayList<Record> listederecord = new ArrayList<Record>();
+		int fileIdx = reldef.getFileIdx();
+		for (int i = 0; i < reldef.getSlotCount(); i++) {
+			PageId pageId = new PageId(i, fileIdx);// obtenir tt les pageId ?
+
+			listederecord.addAll(getRecordsInDataPage(pageId));//ajoute tt les record associé a pageId
+		}
+
+		return listederecord;
+	}
 
 }
