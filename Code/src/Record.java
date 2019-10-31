@@ -20,6 +20,10 @@ public class Record {
 	public List<String> getValues() {
 		return values;
 	}
+	
+	public void setValues(String values) {
+		this.values.add(values);
+	}
 
 	public void WriteToBuffer(ByteBuffer buff, int position) {
 		buff.position(position);
