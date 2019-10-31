@@ -7,7 +7,11 @@ public class Record {
 
 	private RelDef reldef;
 	private List<String> values;
-
+	//Ajout d'un constructeur a vide
+	public Record() {
+		values = new ArrayList<String>();
+	}
+	
 	public Record(RelDef reldef) {
 		this.reldef = reldef;
 		values = new ArrayList<String>();
