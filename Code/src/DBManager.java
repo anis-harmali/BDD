@@ -5,7 +5,7 @@ import java.util.List;
 public class DBManager {
 	private static DBManager INSTANCE;
 	private List<String> types = new ArrayList<String>();
-
+	
 	private DBManager() {
 
 	}
@@ -22,6 +22,7 @@ public class DBManager {
 	public void init() {
 		try {
 			DBDef.getInstance().init();
+			FileManager.getInstance().init();
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -63,5 +64,6 @@ public class DBManager {
 
 		RelDef reldef = new RelDef(nom, nbcol, types, fileIdx, recordSize, slotCount);
 		DBDef.getInstance().addRelation(reldef);
+		FileManager.getInstance().CreateRelationFile(reldef);
 	}
 }
