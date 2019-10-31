@@ -87,5 +87,7 @@ public class BufferManager {
 		}
 	}
 	
-	
+	public void raz() throws IOException {
+		flushAll();
+	}
 }
