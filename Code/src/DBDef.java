@@ -35,47 +35,51 @@ public class DBDef implements Serializable {
 			return INSTANCE;
 	}	
 		
-		public void init() throws IOException, ClassNotFoundException {
-			File saveFile=new File(Constants.chemin+"/Catalog.def");
-			if (saveFile.exists()) {
-				FileInputStream file=new FileInputStream(saveFile);
-				ObjectInputStream in= new ObjectInputStream(file);
-				DBDef.INSTANCE=(DBDef) in.readObject();
-				in.close();
-				file.close();
+	public void init() throws IOException, ClassNotFoundException {
+		File saveFile=new File(Constants.chemin+"/Catalog.def");
+		if (saveFile.exists()) {
+			FileInputStream file=new FileInputStream(saveFile);
+			ObjectInputStream in= new ObjectInputStream(file);
+			DBDef.INSTANCE=(DBDef) in.readObject();
+			in.close();
+			file.close();
 			}	
 		}
 		
-		public void finish() throws IOException {
-			File saveFile=new File(Constants.chemin+"/Catalog.def");
+	public void finish() throws IOException {
+		File saveFile=new File(Constants.chemin+"/Catalog.def");
 			
-			FileOutputStream file= new FileOutputStream(saveFile);
-			ObjectOutputStream out= new ObjectOutputStream(file);
-			
-			out.writeObject(DBDef.getInstance());
-			out.close();
-			file.close();
-		}
+		FileOutputStream file= new FileOutputStream(saveFile);
+		ObjectOutputStream out= new ObjectOutputStream(file);
+		out.writeObject(DBDef.getInstance());
+		out.close();
+		file.close();
+	}
 		
-		public void addRelation(RelDef a) {
-			definition.add(a);
-			this.compteur++;
-		}
+	public void addRelation(RelDef a) {
+		definition.add(a);
+		this.compteur++;
+	}
 		
-		public int getCompteur() {
-			return compteur;
-		}
-		public void setCompteur(int compteur) {
-			this.compteur = compteur;
-		}
-		public void setDefinition(List<RelDef> definition) {
-			this.definition = definition;
-		}
+	public int getCompteur() {
+		return compteur;
+	}
+	
+	public void setCompteur(int compteur) {
+		this.compteur = compteur;
+	}
+
+	public void setDefinition(List<RelDef> definition) {
+		this.definition = definition;
+	}
 		
-		public List<RelDef> getDefinition() {
-			return definition;
-		}
-		
-		
+	public List<RelDef> getDefinition() {
+		return definition;
+	}
+	
+	public void raz() {
+		this.definition.clear();
+		this.setCompteur(0);
+	}	
 		
 }
