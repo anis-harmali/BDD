@@ -36,7 +36,7 @@ public class DBManager {
 		
 	}
 
-	public void ProcessCommand(String chaine) {
+	public void ProcessCommand(String chaine) throws RuntimeException, IOException {
 		String[] ch = chaine.split(" ");
 		types = null;
 		for (int i = 3, j = 0; i < ch.length; i++, j++) {
@@ -47,7 +47,7 @@ public class DBManager {
 
 	}
 
-	public static void CreateRelation(String nom, int nbcol, List<String> types) {
+	public static void CreateRelation(String nom, int nbcol, List<String> types) throws IOException {
 		int recordSize = 0;
 		for (int i = 0; i < nbcol; i++) {
 			if (types.get(i).equals("int")) {

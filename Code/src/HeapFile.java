@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 
 public class HeapFile {
 	private RelDef reldef;
@@ -93,7 +94,7 @@ public class HeapFile {
 					 
 		   	 }
 			 }
-			 bufferManager.freePage(pageId, 0);
+			 buffermanager.freePage(pageId, 0);
 			 return records;
 		}
 		
