@@ -91,7 +91,23 @@ public class HeapFile {
 			 bufferManager.freePage(pageId, 0);
 			 return records;
 		}
-
+		
+	public Rid InsertRecord(Record record) throws IOException {
+		 Rid rid = new Rid();
+		 
+		 
+		 
+		 return rid;
+	 }
+	 
+	 
+	 public ArrayList<Record> GetAllRecords() throws IOException {
+		 ArrayList<Record> listederecord = new ArrayList<Record>();
+		 
+		 
+		 
+		 return listederecord;
+	 }
 
 
 }
