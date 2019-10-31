@@ -34,7 +34,8 @@ public class HeapFile {
 
 		buf.putInt(nbpages);
 		buf.putInt(reldef.getSlotCount());
-
+		//A VERIFIER
+		file.close();
 		return pi;
 	}
 
