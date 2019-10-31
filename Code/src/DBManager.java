@@ -72,4 +72,13 @@ public class DBManager {
 		FileManager.getInstance().raz();
 		DBDef.getInstance().raz();
 	}
+	
+	public void insert(String[] commande) throws IOException {
+		Record record = new Record();
+		for (int i = 2; i < commande.length; i++) {
+			record.setValues(commande[i]);
+		}
+		FileManager.getInstance().InsertRecordInRelation(record, commande[1]);
+
+	}
 }
