@@ -11,6 +11,10 @@ public class HeapFile {
 	public HeapFile(RelDef reldef) {
 		this.reldef = reldef;
 	}
+	
+	public RelDef getReldef() {
+		return reldef;
+	}
 
 	public void createNewOnDisk() throws IOException {
 		diskmanager.CreateFile(reldef.getFileIdx());
