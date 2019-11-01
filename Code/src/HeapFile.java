@@ -108,7 +108,7 @@ public class HeapFile {
 		PageId headerPageId=new PageId(0, fileIdx);
 		ByteBuffer byteBuffer=buffermanager.getPage(headerPageId);
 		int nbrepages = byteBuffer.getInt(0);
-		for (int i = 0; i < nbrepages; i++) {
+		for (int i = 1; i < nbrepages; i++) {
 			PageId pageId = new PageId(i, fileIdx);// obtenir tt les pageId ?
 
 			listederecord.addAll(getRecordsInDataPage(pageId));//ajoute tt les record associé a pageId
