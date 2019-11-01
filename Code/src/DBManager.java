@@ -23,12 +23,12 @@ public class DBManager {
 			return INSTANCE;
 	}
 
-	public void init() {
+	public void init() throws IOException, ClassNotFoundException {
 		DBDef.getInstance().init();
 		filemanager.init();
 	}
 
-	public void finish() {
+	public void finish() throws IOException {
 		DBDef.getInstance().finish();
 	}
 
