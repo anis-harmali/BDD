@@ -112,6 +112,7 @@ public class HeapFile {
 			PageId pageId = new PageId(i, fileIdx);// obtenir tt les pageId ?
 
 			listederecord.addAll(getRecordsInDataPage(pageId));//ajoute tt les record associé a pageId
+			//cpomm
 		}
 
 		return listederecord;
