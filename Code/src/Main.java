@@ -13,7 +13,12 @@ public class Main {
 		ByteBuffer bu2 = null;
 		ByteBuffer bu3 = null;
 					
-		inst.init();
+		try {
+			inst.init();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		DiskManager disk = DiskManager.getInstance();
 		
 		PageId pi1 = new PageId(1,3);
