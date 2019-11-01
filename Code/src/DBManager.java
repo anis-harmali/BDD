@@ -9,7 +9,7 @@ public class DBManager {
 	private static DBManager INSTANCE;
 	private List<String> types = new ArrayList<String>();
 	FileManager filemanager = FileManager.getInstance();
-
+	//ff
 	private DBManager() {
 
 	}
