@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +69,14 @@ public class DBManager {
 	}
 	
 	public void Clean() throws IOException {
+	 //On se place dans le repertoire DB 
+		File repertoire = new File(Constants.chemin);
+	// Recuperation de tous les fichiers du repertoire
+		File[] fichiers = repertoire.listFiles();
+	//Parcours et suppression des fichiers
+		for (int i = 0; i < fichiers.length; i++) {
+			fichiers[i].delete();
+		}
 		BufferManager.getInstance().raz();
 		FileManager.getInstance().raz();
 		DBDef.getInstance().raz();
