@@ -145,4 +145,18 @@ public class DBManager {
 		}
 		System.out.println("Total records : " + listederecord.size());
 	}
+	
+	public void delete(String[] commande) throws IOException {
+		String nomRel = commande[1];
+		int indiceCol = Integer.valueOf(commande[2]);
+		String valeur = commande[3];
+		ArrayList<Record> listederecord = new ArrayList<Record>();
+		listederecord.addAll(filemanager.SelectFromRelation(nomRel, indiceCol, valeur));
+		int x = listederecord.size();
+		for(int i=0;i<listederecord.size();i++) {
+			listederecord.remove(i);
+			
+		}
+		System.out.println("Total records effacés : " + x);
+	}
 }
