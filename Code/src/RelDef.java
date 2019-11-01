@@ -45,5 +45,10 @@ public class RelDef {
 	public int getSlotCount() {
 		return slotCount;
 	}
+	
+	public int setSlotCount(int slotCount) {
+		this.slotCount= slotCount;
+	}
+	
 
 }
