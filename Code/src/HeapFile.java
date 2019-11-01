@@ -102,10 +102,13 @@ public class HeapFile {
 		return rid;
 	}
 
-	public ArrayList<Record> GetAllRecords() throws IOException {
+	public ArrayList<Record> getAllRecords() throws IOException {
 		ArrayList<Record> listederecord = new ArrayList<Record>();
 		int fileIdx = reldef.getFileIdx();
-		for (int i = 0; i < reldef.getSlotCount(); i++) {
+		PageId headerPageId=new PageId(0, fileIdx);
+		ByteBuffer byteBuffer=buffermanager.getPage(headerPageId);
+		int nbrepages = byteBuffer.getInt(0);
+		for (int i = 0; i < nbrepages; i++) {
 			PageId pageId = new PageId(i, fileIdx);// obtenir tt les pageId ?
 
 			listederecord.addAll(getRecordsInDataPage(pageId));//ajoute tt les record associé a pageId
