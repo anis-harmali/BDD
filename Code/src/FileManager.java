@@ -4,21 +4,26 @@ import java.util.ArrayList;
 public class FileManager {
 	DBDef dbdef = DBDef.getInstance();
 	private ArrayList<HeapFile> heapFiles;
+	private static FileManager INSTANCE;
 
 	private FileManager() {
 		heapFiles = new ArrayList<HeapFile>();
 	}
 
-	public static final synchronized FileManager getInstance() {
-		final FileManager INSTANCE = new FileManager();
-		return INSTANCE;
+	public static synchronized FileManager getInstance() {
+
+		if (INSTANCE == null) {
+			INSTANCE = new FileManager();
+			return INSTANCE;
+		} else
+			return INSTANCE;
 	}
 
 	public void init() {
 		for (int i = 0; i < dbdef.getDefinition().size(); i++) {
 			HeapFile heapfile = new HeapFile(dbdef.getDefinition().get(i));
 			heapFiles.add(heapfile);
-		
+
 		}
 
 	}
@@ -28,7 +33,7 @@ public class FileManager {
 		heapFiles.add(heapfile);
 		heapfile.createNewOnDisk();
 	}
-	
+
 	public Rid InsertRecordInRelation(Record record, String relName) throws IOException {
 		Rid rid = null;
 		for (int i = 0; i < heapFiles.size(); i++) {
@@ -62,10 +67,9 @@ public class FileManager {
 
 		return listederecord;
 	}
-	
+
 	public void raz() throws IOException {
 		heapFiles.clear();
 	}
-	
-}
 
+}
