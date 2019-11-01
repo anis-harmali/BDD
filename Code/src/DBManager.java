@@ -90,4 +90,40 @@ public class DBManager {
 		FileManager.getInstance().InsertRecordInRelation(record, commande[1]);
 
 	}
+	//
+	public void insertAll(String[] commande) throws IOException {
+		String nomRelation=commande[0];
+		String csv=commande[1];
+		File fichierCsv= new File(Constants.chemin+"\\"+csv);
+		
+		List<String> lignes=new ArrayList<String>();
+	    FileReader fr = new FileReader(fichierCsv);
+	    BufferedReader buffer = new BufferedReader(fr);
+	    
+	    String ligne;
+	    
+	    while((ligne=buffer.readLine())!=null) {
+	    	lignes.add(ligne);
+	    }
+	    
+	    ArrayList<Record> tabRecords =new ArrayList<Record>();
+	    //on met tout les record du fichier dans un tableau de record
+	    for(String i:lignes) {
+	    	Record record=new Record();
+	    	String[] tmp= i.split(",");
+	    	
+	    	for(String j:tmp) {
+	    		record.setValues(j);
+	    	}
+	    	tabRecords.add(record);
+	    }
+		
+	    for(Record record:tabRecords) {
+	    	fileManager.InsertRecordInRelation(record, nomRelation);
+	    }
+	    
+	    buffer.close();
+	    fr.close();
+		
+	}
 }
