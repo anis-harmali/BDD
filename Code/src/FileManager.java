@@ -44,7 +44,7 @@ public class FileManager {
 		ArrayList<Record> listederecord = new ArrayList<Record>();
 		for (int i = 0; i < heapFiles.size(); i++) {
 			if (heapFiles.get(i).getReldef().getNom().equals(relName)) {
-				listederecord.add(heapFiles.get(i).GetAllRecords().get(i));
+				listederecord.add(heapFiles.get(i).getAllRecords().get(i));
 			}
 		}
 		return listederecord;
