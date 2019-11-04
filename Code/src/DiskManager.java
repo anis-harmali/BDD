@@ -6,58 +6,59 @@ import java.nio.ByteBuffer;
 
 public class DiskManager {
 	private static DiskManager INSTANCE;
-	
-	private DiskManager() {}
-	
+
+	private DiskManager() {
+	}
+
 	public static synchronized DiskManager getInstance() {
-		
-		if(INSTANCE == null) {
-			INSTANCE =  new DiskManager();
+
+		if (INSTANCE == null) {
+			INSTANCE = new DiskManager();
 			return INSTANCE;
-		}
-		else 
+		} else
 			return INSTANCE;
-	}	
-	
+	}
 
 	public void CreateFile(int fileIdx) throws IOException {
 		new File("./DB").mkdirs();
-		FileWriter file1=new FileWriter(Constants.chemin+"/Data_"+fileIdx+".rf");
+		FileWriter file1 = new FileWriter(Constants.chemin + "/Data_" + fileIdx + ".rf");
 		file1.close();
 	}
-	
+
 	public PageId AddPage(int fileIdx) throws IOException {
 
-		RandomAccessFile fw = new RandomAccessFile(new File("DB/Data_"+fileIdx+".rf"),"rw" );				
+		RandomAccessFile fw = new RandomAccessFile(new File("DB/Data_" + fileIdx + ".rf"), "rw");
 		fw.seek(fw.length());
 		fw.writeByte(Constants.pageSize);
-		for(int i=0;i<fw.length()-1;i++) {
+		for(int i=0;i<fw.length()-1;i--) {
 			fw.write((byte) 0);
 		}
-		PageId pi = new PageId(((int)fw.length()/Constants.pageSize)-1,fileIdx);
+		PageId pi = new PageId(((int) fw.length() / Constants.pageSize) - 1, fileIdx);
 		fw.close();
-		
-		return pi;	
+
+		return pi;
 	}
-	
+
 	public void ReadPage(PageId pageId, ByteBuffer buff) throws IOException {
-		RandomAccessFile file = new RandomAccessFile("DB/Data_"+pageId.getFileIdx()+".rf", "r");
-		int pos = pageId.getPageIdx()*Constants.pageSize;
-		file.seek(pos);
-		file.read(buff.array());
-		file.close();
-		
+		RandomAccessFile file = new RandomAccessFile(Constants.chemin + "/Data_" + pageId.getFileIdx() + ".rf", "r");
+		int pos = pageId.getPageIdx() * Constants.pageSize;
+
+		while (pos > 0) {
+			file.seek(pos);
+			file.read(buff.array());
+			file.close();
+		}
 	}
-	
+
 	public void Writepage(PageId pageId, ByteBuffer buff) throws IOException {
-		RandomAccessFile file = new RandomAccessFile(Constants.chemin+"/Data_"+pageId.getFileIdx()+".rf", "rw");
-		int pos =pageId.getPageIdx()*Constants.pageSize;
+		RandomAccessFile file = new RandomAccessFile(Constants.chemin + "/Data_" + pageId.getFileIdx() + ".rf", "rw");
+		int pos = pageId.getPageIdx() * Constants.pageSize;
+		while(pos>0) {
 		file.seek(pos);
 		file.write(buff.array());
 		file.close();
-		
+		}
+
 	}
-	
-	
-	
+
 }
