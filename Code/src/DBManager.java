@@ -55,7 +55,7 @@ public class DBManager {
 				recordSize += 2 * valeur;
 			}
 		}
-		int slotCount = Constants.pageSize / recordSize;
+		int slotCount = Constants.pageSize / (recordSize+1);
 		int fileIdx = DBDef.getInstance().getCompteur();
 
 		RelDef reldef = new RelDef(nom, nbcol, types, fileIdx, recordSize, slotCount);
@@ -157,6 +157,6 @@ public class DBManager {
 			listederecord.remove(i);
 			
 		}
-		System.out.println("Total records effacés : " + x);
+		System.out.println("Total records effacÃ©s : " + x);
 	}
 }
