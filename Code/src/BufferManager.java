@@ -36,7 +36,7 @@ public class BufferManager {
 		
 		for(int i=0; i<bufferpool.size();i++) { 
 			Frame fr = bufferpool.get(i);
-			if (fr.getPageId().equals(null)) {
+			if (fr.getPageId()==(null)) {
 			DiskManager.getInstance().ReadPage(pageId, fr.getBuffer());
 			fr.incrementerPin();
 			return fr.getBuffer();
