@@ -29,28 +29,30 @@ public class HeapFile {
 		buffermanager.freePage(pid, 1);
 	}
 
-	public PageId addDataPage() throws IOException {
+	public PageId addDataPage() throws IOException {// ok
 		PageId pi = diskmanager.AddPage(reldef.getFileIdx());
-		ByteBuffer buf = buffermanager.getPage(pi);
 
-		RandomAccessFile file = new RandomAccessFile(new File(Constants.chemin + "/Data_" + pi.getFileIdx() + ".rf"),
-				"rw");
-		int nbpages = ((int) file.length() / Constants.pageSize) - 1;
+		int nbpages = pi.getPageIdx();
 
+		PageId headerpage = new PageId(0, pi.getFileIdx());
+
+		ByteBuffer buf = buffermanager.getPage(headerpage);
+		buf.position(0);
 		buf.putInt(nbpages);
+		buf.position(nbpages * 4);
 		buf.putInt(reldef.getSlotCount());
-		// A VERIFIER
-		file.close();
+		buffermanager.freePage(headerpage, 1);
 		return pi;
 	}
 
-	public PageId getFreeDataPageId() throws IOException {
+	public PageId getFreeDataPageId() throws IOException {// ok
 		int idfichier = reldef.getFileIdx();
 		PageId pageid = new PageId(idfichier, 0);
 		ByteBuffer b = buffermanager.getPage(pageid);
-		int nbrepages = b.getInt(0);
+		b.position(0);
+		int nbrepages = b.getInt();
 		for (int i = 0; i < nbrepages; i++) {
-			if (b.getInt(i) > 0) {
+			if (b.getInt() > 0) {
 
 				return new PageId(this.reldef.getFileIdx(), i);
 			}
@@ -59,37 +61,31 @@ public class HeapFile {
 		return null;
 	}
 
-	public Rid writeRecordToDataPage(Record record, PageId pageid) throws IOException {
+	public Rid writeRecordToDataPage(Record record, PageId pageid) throws IOException {// ok
 		ByteBuffer page = buffermanager.getPage(pageid);
 		int nbreslots = reldef.getSlotCount();
-		int i = 0;
 		boolean isfind = false;
-		while (nbreslots >= 1 && isfind) {
-			if (page.getInt(i) == 1) {
+		page.position(0);
+		while (nbreslots >= 1 && (isfind == false)) {
+			nbreslots--;
+			if (page.get() == 0) {
 				isfind = true;
-			} else
-				i++;
+			}
 		}
-		record.WriteToBuffer(page, nbreslots + i * reldef.getRecordSize());
-		reldef.setSlotCount(nbreslots - 1);
+		int position = page.position();
+		page.put(position - 1, (byte) 1);
+		record.WriteToBuffer(page, nbreslots + position * reldef.getRecordSize());
 		return new Rid(pageid, reldef.getSlotCount());
 	}
 
 	public ArrayList<Record> getRecordsInDataPage(PageId pageId) throws IOException {
-
 		ArrayList<Record> records = new ArrayList<Record>();
-
 		ByteBuffer buffer = buffermanager.getPage(pageId);
-
 		for (int i = 0; i < reldef.getSlotCount(); i++) {
-
-			if (buffer.getInt(i) == (byte) 1) {
-
+			if (buffer.get() == (byte) 1) {
 				Record record = new Record();
-				// record = readRecordFromBuffer(buffer,i );
-
+				record.readFromBuffer(buffer, reldef.getSlotCount() + i * reldef.getRecordSize());
 				records.add(record);
-
 			}
 		}
 		buffermanager.freePage(pageId, 0);
@@ -97,24 +93,20 @@ public class HeapFile {
 	}
 
 	public Rid InsertRecord(Record record) throws IOException {
-		Rid rid = new Rid();
-		rid = writeRecordToDataPage(record, getFreeDataPageId());
+		Rid rid = writeRecordToDataPage(record, getFreeDataPageId());
 		return rid;
 	}
 
 	public ArrayList<Record> getAllRecords() throws IOException {
 		ArrayList<Record> listederecord = new ArrayList<Record>();
 		int fileIdx = reldef.getFileIdx();
-		PageId headerPageId=new PageId(0, fileIdx);
-		ByteBuffer byteBuffer=buffermanager.getPage(headerPageId);
+		PageId headerPageId = new PageId(0, fileIdx);
+		ByteBuffer byteBuffer = buffermanager.getPage(headerPageId);
 		int nbrepages = byteBuffer.getInt(0);
-		for (int i = 1; i < nbrepages; i++) {
+		for (int i = 1; i <= nbrepages; i++) {
 			PageId pageId = new PageId(i, fileIdx);// obtenir tt les pageId ?
-
-			listederecord.addAll(getRecordsInDataPage(pageId));//ajoute tt les record associé a pageId
-			//cpomm
+			listederecord.addAll(getRecordsInDataPage(pageId));// ajoute tt les record associÃ© a pageId
 		}
-
 		return listederecord;
 	}
 
