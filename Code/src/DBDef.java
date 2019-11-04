@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -22,7 +22,7 @@ public class DBDef implements Serializable {
 	private int compteur;
 	
 	private DBDef() {
-	
+		this.definition = new ArrayList<RelDef>();
 	}
 	
 	public static synchronized DBDef getInstance() {
