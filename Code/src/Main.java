@@ -1,40 +1,30 @@
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-
+import java.util.ArrayList;
+import java.util.List;
 public class Main {
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, ClassNotFoundException {
 		// TODO Auto-generated method stub
-		Constants.chemin = args[0];
-		BufferManager b = BufferManager.getInstance();
-		DBManager inst = DBManager.getInstance();
-		ByteBuffer bu1 = null;
-		ByteBuffer bu2 = null;
-		ByteBuffer bu3 = null;
-					
-		try {
-			inst.init();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		DiskManager disk = DiskManager.getInstance();
+		Constants.chemin=args[0];
+		ByteBuffer buff = ByteBuffer.allocate(10) ;
+        BufferManager b = BufferManager.getInstance();
+        DBManager dbmanager = DBManager.getInstance();
+        DiskManager disk = DiskManager.getInstance();
+        DBDef dbDef = DBDef.getInstance();
+        FileManager fileManager = FileManager.getInstance();
+        List<String> liste = new ArrayList<String>();
+        liste.add("int");
+        liste.add("int");
+        disk.CreateFile(12);
+        RelDef relDef = new RelDef("R", 2, liste,0, 20, 100);
+        Record record = new Record(relDef);
+        fileManager.CreateRelationFile(relDef);
+        fileManager.InsertRecordInRelation(record, "Rel");
+        record.readFromBuffer(buff, 0);
+        System.out.print(record.getValues());
 		
-		PageId pi1 = new PageId(1,3);
-		PageId pi2 = new PageId(0,15);
-		PageId pi3 = new PageId(1,4);
-		
-		
-		bu1 = b.getPage(pi1);
-		bu2 = b.getPage(pi2);
-		bu3 = b.getPage(pi3);
-		
-		System.out.print(bu1.getChar());
-		System.out.print(bu2.getChar());
-
-			
-			
 		}
 	
 	}
