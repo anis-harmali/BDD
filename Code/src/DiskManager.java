@@ -31,6 +31,9 @@ public class DiskManager {
 		RandomAccessFile fw = new RandomAccessFile(new File("DB/Data_"+fileIdx+".rf"),"rw" );				
 		fw.seek(fw.length());
 		fw.writeByte(Constants.pageSize);
+		for(int i=0;i<fw.length()-1;i++) {
+			fw.write((byte) 0);
+		}
 		PageId pi = new PageId(((int)fw.length()/Constants.pageSize)-1,fileIdx);
 		fw.close();
 		
