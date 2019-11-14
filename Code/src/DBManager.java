@@ -1,3 +1,4 @@
+import java.awt.desktop.SystemEventListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -9,7 +10,8 @@ public class DBManager {
 	private static DBManager INSTANCE;
 	private List<String> types = new ArrayList<String>();
 	FileManager filemanager = FileManager.getInstance();
-	//ff
+
+	// ff
 	private DBManager() {
 
 	}
@@ -55,7 +57,7 @@ public class DBManager {
 				recordSize += 2 * valeur;
 			}
 		}
-		int slotCount = Constants.pageSize / (recordSize+1);
+		int slotCount = Constants.pageSize / recordSize;
 		int fileIdx = DBDef.getInstance().getCompteur();
 
 		RelDef reldef = new RelDef(nom, nbcol, types, fileIdx, recordSize, slotCount);
@@ -75,6 +77,7 @@ public class DBManager {
 	}
 
 	public void insert(String[] commande) throws IOException {
+
 		Record record = new Record();
 		for (int i = 2; i < commande.length; i++) {
 			record.setValues(commande[i]);
@@ -86,7 +89,7 @@ public class DBManager {
 	public void insertAll(String[] commande) throws IOException {
 		String nomRelation = commande[0];
 		String csv = commande[1];
-		File fichierCsv = new File(Constants.chemin + "\\" + csv);
+		File fichierCsv = new File(Constants.chemin+"/.." + commande[2] + ".csv");
 
 		List<String> lignes = new ArrayList<String>();
 		FileReader fr = new FileReader(fichierCsv);
@@ -95,24 +98,16 @@ public class DBManager {
 		String ligne;
 
 		while ((ligne = buffer.readLine()) != null) {
-			lignes.add(ligne);
-		}
-
-		ArrayList<Record> tabRecords = new ArrayList<Record>();
-		// on met tout les record du fichier dans un tableau de record
-		for (String i : lignes) {
 			Record record = new Record();
-			String[] tmp = i.split(",");
+			String[] tmp = ligne.split(",");
 
 			for (String j : tmp) {
 				record.setValues(j);
 			}
-			tabRecords.add(record);
-		}
-
-		for (Record record : tabRecords) {
+			
 			filemanager.InsertRecordInRelation(record, nomRelation);
 		}
+
 
 		buffer.close();
 		fr.close();
@@ -121,14 +116,14 @@ public class DBManager {
 
 	public void selectall(String[] commande) throws IOException {
 		ArrayList<Record> listederecord = new ArrayList<Record>();
-		listederecord.addAll(filemanager.SelectAllFromRelation(commande[1]));
+		listederecord = filemanager.SelectAllFromRelation(commande[1]);
 		for (int i = 0; i < listederecord.size(); i++) {
 			for (int j = 0; j < listederecord.get(i).getValues().size(); j++) {
 				System.out.print(listederecord.get(i).getValues().get(j).toString() + " ; ");
 			}
 			System.out.println();
 		}
-		System.out.println("Total records : " + listederecord.size());
+		System.out.println("Total records : " + listederecord.get(0).getValues().get(1).toString());
 	}
 
 	public void select(String[] commande) throws IOException {
@@ -145,7 +140,7 @@ public class DBManager {
 		}
 		System.out.println("Total records : " + listederecord.size());
 	}
-	
+
 	public void delete(String[] commande) throws IOException {
 		String nomRel = commande[1];
 		int indiceCol = Integer.valueOf(commande[2]);
@@ -153,9 +148,9 @@ public class DBManager {
 		ArrayList<Record> listederecord = new ArrayList<Record>();
 		listederecord.addAll(filemanager.SelectFromRelation(nomRel, indiceCol, valeur));
 		int x = listederecord.size();
-		for(int i=0;i<listederecord.size();i++) {
+		for (int i = 0; i < listederecord.size(); i++) {
 			listederecord.remove(i);
-			
+
 		}
 		System.out.println("Total records effacés : " + x);
 	}
