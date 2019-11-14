@@ -37,8 +37,11 @@ public class FileManager {
 	public Rid InsertRecordInRelation(Record record, String relName) throws IOException {
 		Rid rid = null;
 		for (int i = 0; i < heapFiles.size(); i++) {
+			
 			if (heapFiles.get(i).getReldef().getNom().equals(relName)) {
-				rid = heapFiles.get(i).InsertRecord(record);
+				
+			return rid = heapFiles.get(i).InsertRecord(record);
+				
 			}
 		}
 
@@ -57,7 +60,7 @@ public class FileManager {
 
 	public ArrayList<Record> SelectFromRelation(String relName, int idxCol, String valeur) throws IOException {
 		ArrayList<Record> listederecord = new ArrayList<Record>();
-		ArrayList<Record> liste = null;
+		ArrayList<Record> liste = new ArrayList<Record>();
 		liste = SelectAllFromRelation(relName);
 		for (int i = 0; i < liste.size(); i++) {
 			if (liste.get(i).getValues().get(idxCol).equals(valeur)) {
