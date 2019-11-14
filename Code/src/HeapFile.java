@@ -31,11 +31,8 @@ public class HeapFile {
 
 	public PageId addDataPage() throws IOException {// ok
 		PageId pi = diskmanager.AddPage(reldef.getFileIdx());
-
 		int nbpages = pi.getPageIdx();
-
 		PageId headerpage = new PageId(0, pi.getFileIdx());
-
 		ByteBuffer buf = buffermanager.getPage(headerpage);
 		buf.position(0);
 		buf.putInt(nbpages);
@@ -54,7 +51,7 @@ public class HeapFile {
 		for (int i = 0; i < nbrepages; i++) {
 			if (b.getInt() > 0) {
 
-				return new PageId(this.reldef.getFileIdx(), i);
+				return new PageId(i+1, this.reldef.getFileIdx());
 			}
 		}
 
@@ -75,15 +72,18 @@ public class HeapFile {
 		int position = page.position();
 		page.put(position - 1, (byte) 1);
 		record.WriteToBuffer(page, nbreslots + position * reldef.getRecordSize());
+		buffermanager.freePage(pageid, 1);
 		return new Rid(pageid, reldef.getSlotCount());
 	}
 
 	public ArrayList<Record> getRecordsInDataPage(PageId pageId) throws IOException {
 		ArrayList<Record> records = new ArrayList<Record>();
 		ByteBuffer buffer = buffermanager.getPage(pageId);
+		buffer.position(0);
 		for (int i = 0; i < reldef.getSlotCount(); i++) {
 			if (buffer.get() == (byte) 1) {
 				Record record = new Record();
+				record.setReldef(this.reldef);
 				record.readFromBuffer(buffer, reldef.getSlotCount() + i * reldef.getRecordSize());
 				records.add(record);
 			}
@@ -93,8 +93,15 @@ public class HeapFile {
 	}
 
 	public Rid InsertRecord(Record record) throws IOException {
-		Rid rid = writeRecordToDataPage(record, getFreeDataPageId());
-		return rid;
+		record.setReldef(this.reldef);
+		Rid rid;
+		PageId dpId = getFreeDataPageId();
+		if (dpId == null) {
+			dpId = addDataPage();
+
+		}
+		return rid = writeRecordToDataPage(record, dpId);
+
 	}
 
 	public ArrayList<Record> getAllRecords() throws IOException {
@@ -104,7 +111,7 @@ public class HeapFile {
 		ByteBuffer byteBuffer = buffermanager.getPage(headerPageId);
 		int nbrepages = byteBuffer.getInt(0);
 		for (int i = 1; i <= nbrepages; i++) {
-			PageId pageId = new PageId(i, fileIdx);// obtenir tt les pageId ?
+			PageId pageId = new PageId(i, fileIdx);
 			listederecord.addAll(getRecordsInDataPage(pageId));// ajoute tt les record associé a pageId
 		}
 		return listederecord;
