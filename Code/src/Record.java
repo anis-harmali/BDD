@@ -17,6 +17,12 @@ public class Record {
 		values = new ArrayList<String>();
 	}
 	
+	
+	
+	public void setReldef(RelDef reldef) {
+		this.reldef = reldef;
+	}
+
 	public List<String> getValues() {
 		return values;
 	}
@@ -32,7 +38,7 @@ public class Record {
 				buff.putInt(Integer.parseInt(values.get(i)));
 			} else if (reldef.getType().get(i).equals("float")) {
 				buff.putFloat(Float.parseFloat(values.get(i)));
-			} else if (reldef.getType().get(i).substring(0, 5).equals("string")) {
+			} else if (reldef.getType().get(i).substring(0,6).equals("string")) {
 				int valeur = Integer.parseInt(reldef.getType().get(i).substring(6));
 				for (int j = 0; j < values.get(i).length(); j++) {
 					buff.putChar(values.get(i).charAt(j));
@@ -49,7 +55,7 @@ public class Record {
 				values.add(String.valueOf(buff.getInt()));
 			} else if (reldef.getType().get(i).equals("float")) {
 				values.add(String.valueOf(buff.getFloat()));
-			} else if (reldef.getType().get(i).substring(0, 5).equals("string")) {
+			} else if (reldef.getType().get(i).substring(0,6).equals("string")) {
 				int valeur = Integer.parseInt(reldef.getType().get(i).substring(6));
 				for (int j = 0; j <valeur; j++) {
 					values.add(String.valueOf(buff.getChar(j)));
