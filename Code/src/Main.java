@@ -1,30 +1,35 @@
 
 import java.io.IOException;
+import java.lang.ref.Cleaner.Cleanable;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
+
 public class Main {
 
 	public static void main(String[] args) throws IOException, ClassNotFoundException {
 		// TODO Auto-generated method stub
 		Constants.chemin=args[0];
-		ByteBuffer buff = ByteBuffer.allocate(10) ;
+
         BufferManager b = BufferManager.getInstance();
         DBManager dbmanager = DBManager.getInstance();
         DiskManager disk = DiskManager.getInstance();
         DBDef dbDef = DBDef.getInstance();
         FileManager fileManager = FileManager.getInstance();
         List<String> liste = new ArrayList<String>();
+        dbmanager.Clean();
         liste.add("int");
+        liste.add("float");
         liste.add("int");
-        disk.CreateFile(12);
-        RelDef relDef = new RelDef("R", 2, liste,0, 20, 100);
-        Record record = new Record(relDef);
-        fileManager.CreateRelationFile(relDef);
-        fileManager.InsertRecordInRelation(record, "Rel");
-        record.readFromBuffer(buff, 0);
-        System.out.print(record.getValues());
-		
+       
+        dbmanager.CreateRelation("R", 3, liste);
+       	RelDef relDef = new RelDef("R", 2, liste,1, 20, 5);
+        String[] commande = {"insert","R", "1","1.3","2"};
+        dbmanager.insert(commande);  
+        String[] commande2 = {"insert","R", "2","1.5","2"};
+        dbmanager.insert(commande2);
+        String[] commande3 = {"selectall","R"};
+        dbmanager.selectall(commande3);
 		}
 	
 	}
