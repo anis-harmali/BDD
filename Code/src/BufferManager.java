@@ -23,8 +23,9 @@ public class BufferManager {
 			return INSTANCE;
 	}	
 	
-	public ByteBuffer getPage(PageId pageId) throws IOException {
-		
+	public ByteBuffer getPage(PageId pageId) throws IOException 
+	{
+		int kk=0;
 		for(int i=0; i<bufferpool.size();i++) {
 			Frame fr = bufferpool.get(i);
 			if (fr.getPageId() == null) continue;
@@ -38,6 +39,7 @@ public class BufferManager {
 			Frame fr = bufferpool.get(i);
 			if (fr.getPageId()==(null)) {
 			DiskManager.getInstance().ReadPage(pageId, fr.getBuffer());
+			fr.setPageId(pageId);
 			fr.incrementerPin();
 			return fr.getBuffer();
 			}
@@ -47,11 +49,12 @@ public class BufferManager {
 			Frame fr = bufferpool.get(i);
 			if (fr.getPinCount() == 0) {
 				if(fr.getDirty()==1) {
-					DiskManager.getInstance().Writepage(pageId, fr.getBuffer());
+					DiskManager.getInstance().Writepage(fr.getPageId(), fr.getBuffer());
 				}
 			
 				fr.setDirty(0) ;
 			    DiskManager.getInstance().ReadPage(pageId, fr.getBuffer());
+			    fr.setPageId(pageId);
 			    fr.incrementerPin();
 			    return fr.getBuffer();	
 			}
