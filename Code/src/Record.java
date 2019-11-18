@@ -57,13 +57,14 @@ public class Record {
 				values.add(String.valueOf(buff.getFloat()));
 			} else if (reldef.getType().get(i).substring(0,6).equals("string")) {
 				int valeur = Integer.parseInt(reldef.getType().get(i).substring(6));
+				StringBuilder sb = new StringBuilder();
 				for (int j = 0; j <valeur; j++) {
-					values.add(String.valueOf(buff.getChar(j)));
-				}
 					
+					sb.append(String.valueOf(buff.getChar()));
+				}
+				values.add(sb.toString());
 				}
 			}
 
 		}
 	}
-
