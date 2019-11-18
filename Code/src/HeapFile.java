@@ -69,9 +69,9 @@ public class HeapFile {
 				isfind = true;
 			}
 		}
-		int position = page.position();
-		page.put(position - 1, (byte) 1);
-		record.WriteToBuffer(page, nbreslots + position * reldef.getRecordSize());
+		int position = page.position()-1;
+		page.put(position , (byte) 1);
+		record.WriteToBuffer(page, reldef.getSlotCount() + position * reldef.getRecordSize());
 		buffermanager.freePage(pageid, 1);
 		return new Rid(pageid, reldef.getSlotCount());
 	}
@@ -81,7 +81,7 @@ public class HeapFile {
 		ByteBuffer buffer = buffermanager.getPage(pageId);
 		buffer.position(0);
 		for (int i = 0; i < reldef.getSlotCount(); i++) {
-			if (buffer.get() == (byte) 1) {
+			if ( buffer.get(i)== (byte) 1) {
 				Record record = new Record();
 				record.setReldef(this.reldef);
 				record.readFromBuffer(buffer, reldef.getSlotCount() + i * reldef.getRecordSize());
