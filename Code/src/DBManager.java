@@ -34,14 +34,34 @@ public class DBManager {
 		DBDef.getInstance().finish();
 	}
 
-	public void ProcessCommand(String chaine) throws IOException {
-		String[] ch = chaine.split(" ");
-		types = null;
-		for (int i = 3, j = 0; i < ch.length; i++, j++) {
-			types.add(j, ch[i]);
+	public void ProcessCommand(String commande) throws IOException {
+		String[] tab = commande.split(" ");
+		List<String> listetypeStrings = new ArrayList<String>();
+		for (int i = 3; i < tab.length; i++) {
+			listetypeStrings.add(tab[i]);
 		}
-
-		CreateRelation(ch[1], Integer.parseInt(ch[2]), types);
+		switch (tab[0]) {
+		case "create":
+			CreateRelation(tab[1], Integer.parseInt(tab[2]), listetypeStrings);
+			break;
+		case "insert":
+			insert(tab);
+			break;
+		case "clean":
+			Clean();
+			break;
+		case "selectall":
+			selectall(tab[1]);
+			break;
+		case "select":
+			select(tab);
+			break;
+		case "delete":
+			delete(tab);
+			break;
+		default:
+			throw new IllegalArgumentException("Unexpected value: " + tab[0]);
+		}
 
 	}
 
@@ -89,7 +109,7 @@ public class DBManager {
 	public void insertAll(String[] commande) throws IOException {
 		String nomRelation = commande[0];
 		String csv = commande[1];
-		File fichierCsv = new File(Constants.chemin+"/.." + commande[2] + ".csv");
+		File fichierCsv = new File(Constants.chemin + "/.." + commande[2] + ".csv");
 
 		List<String> lignes = new ArrayList<String>();
 		FileReader fr = new FileReader(fichierCsv);
@@ -104,26 +124,25 @@ public class DBManager {
 			for (String j : tmp) {
 				record.setValues(j);
 			}
-			
+
 			filemanager.InsertRecordInRelation(record, nomRelation);
 		}
-
 
 		buffer.close();
 		fr.close();
 
 	}
 
-	public void selectall(String[] commande) throws IOException {
+	public void selectall(String nomcommande) throws IOException {
 		ArrayList<Record> listederecord = new ArrayList<Record>();
-		listederecord = filemanager.SelectAllFromRelation(commande[1]);
+		listederecord = filemanager.SelectAllFromRelation(nomcommande);
 		for (int i = 0; i < listederecord.size(); i++) {
 			for (int j = 0; j < listederecord.get(i).getValues().size(); j++) {
 				System.out.print(listederecord.get(i).getValues().get(j).toString() + " ; ");
 			}
 			System.out.println();
 		}
-		System.out.println("Total records : " + listederecord.get(0).getValues().get(1).toString());
+		System.out.println("Total records : " + listederecord.size());
 	}
 
 	public void select(String[] commande) throws IOException {
