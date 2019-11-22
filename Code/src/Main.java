@@ -12,15 +12,12 @@ public class Main {
 		Constants.chemin = args[0];
 
 		DBManager dbmanager = DBManager.getInstance();
-		dbmanager.Clean();
+		
 
-		dbmanager.ProcessCommand("create R 3 int string3 int");
-		dbmanager.ProcessCommand("insert R 1 aab 2");
-		dbmanager.ProcessCommand("insert R 2 abc 2");
-		dbmanager.ProcessCommand("insert R 2 abc 2");
-		dbmanager.ProcessCommand("insert R 2 abc 2");
-		dbmanager.ProcessCommand("selectall R");
-
+		dbmanager.ProcessCommand("create S 8 string2 int string4 float string5 int int int");
+		dbmanager.ProcessCommand("insertall S S1.csv");
+		//dbmanager.ProcessCommand("selectall S");
+		dbmanager.ProcessCommand("select S 3 Nati");
 	}
 
 }
