@@ -25,7 +25,7 @@ public class BufferManager {
 	
 	public ByteBuffer getPage(PageId pageId) throws IOException 
 	{
-		int kk=0;
+		
 		for(int i=0; i<bufferpool.size();i++) {
 			Frame fr = bufferpool.get(i);
 			if (fr.getPageId() == null) continue;
