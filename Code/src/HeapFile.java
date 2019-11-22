@@ -21,9 +21,9 @@ public class HeapFile {
 		diskmanager.CreateFile(reldef.getFileIdx());
 		PageId pid = diskmanager.AddPage(reldef.getFileIdx());
 		ByteBuffer buf = buffermanager.getPage(pid);
-
+		buf.position(0);
 		for (int i = 0; i < Constants.pageSize; i++) {
-			buf.put((byte) 0);
+			buf.put((byte)0);
 		}
 
 		buffermanager.freePage(pid, 1);
@@ -114,6 +114,7 @@ public class HeapFile {
 			PageId pageId = new PageId(i, fileIdx);
 			listederecord.addAll(getRecordsInDataPage(pageId));// ajoute tt les record associé a pageId
 		}
+		buffermanager.freePage(headerPageId, 1);
 		return listederecord;
 	}
 
