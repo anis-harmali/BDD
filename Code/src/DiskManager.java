@@ -31,6 +31,7 @@ public class DiskManager {
 			fw.write((byte) 0);
 		}
 		PageId pi = new PageId(((int) fw.length() / Constants.pageSize) - 1, fileIdx);
+		
 		fw.close();
 
 		return pi;
@@ -48,11 +49,9 @@ public class DiskManager {
 	public void Writepage(PageId pageId, ByteBuffer buff) throws IOException {
 		RandomAccessFile file = new RandomAccessFile(Constants.chemin + "/Data_" + pageId.getFileIdx() + ".rf", "rw");
 		int pos = pageId.getPageIdx() * Constants.pageSize;
-		while(pos>0) {
 		file.seek(pos);
 		file.write(buff.array());
 		file.close();
-		}
 
 	}
 
