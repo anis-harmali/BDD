@@ -32,16 +32,17 @@ public class FileManager {
 		HeapFile heapfile = new HeapFile(reldef);
 		heapFiles.add(heapfile);
 		heapfile.createNewOnDisk();
+
 	}
 
 	public Rid InsertRecordInRelation(Record record, String relName) throws IOException {
 		Rid rid = null;
 		for (int i = 0; i < heapFiles.size(); i++) {
-			
+
 			if (heapFiles.get(i).getReldef().getNom().equals(relName)) {
-				
-			return rid = heapFiles.get(i).InsertRecord(record);
-				
+				rid = heapFiles.get(i).InsertRecord(record);
+				return rid;
+
 			}
 		}
 
