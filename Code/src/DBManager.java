@@ -59,6 +59,9 @@ public class DBManager {
 		case "delete":
 			delete(tab);
 			break;
+		case "insertall":
+			insertAll(tab);
+			break;
 		default:
 			throw new IllegalArgumentException("Unexpected value: " + tab[0]);
 		}
@@ -72,12 +75,12 @@ public class DBManager {
 				recordSize += 4;
 			} else if (types.get(i).equals("float")) {
 				recordSize += 4;
-			} else if (types.get(i).substring(0, 5).equals("string")) {
+			} else if (types.get(i).substring(0, 6).equals("string")) {
 				int valeur = Integer.parseInt(types.get(i).substring(6));
 				recordSize += 2 * valeur;
 			}
 		}
-		int slotCount = Constants.pageSize / recordSize;
+		int slotCount = Constants.pageSize / (recordSize+1);
 		int fileIdx = DBDef.getInstance().getCompteur();
 
 		RelDef reldef = new RelDef(nom, nbcol, types, fileIdx, recordSize, slotCount);
@@ -107,9 +110,9 @@ public class DBManager {
 	}
 
 	public void insertAll(String[] commande) throws IOException {
-		String nomRelation = commande[0];
+		String nomRelation = commande[1];
 		String csv = commande[1];
-		File fichierCsv = new File(Constants.chemin + "/.." + commande[2] + ".csv");
+		File fichierCsv = new File(Constants.chemin + "/../" + commande[2]);
 
 		List<String> lignes = new ArrayList<String>();
 		FileReader fr = new FileReader(fichierCsv);
@@ -120,7 +123,6 @@ public class DBManager {
 		while ((ligne = buffer.readLine()) != null) {
 			Record record = new Record();
 			String[] tmp = ligne.split(",");
-
 			for (String j : tmp) {
 				record.setValues(j);
 			}
