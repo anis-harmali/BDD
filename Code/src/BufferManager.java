@@ -44,9 +44,11 @@ public class BufferManager {
 			return fr.getBuffer();
 			}
 		}
+	
 		
 		for(int i=0; i<bufferpool.size();i++) { 
 			Frame fr = bufferpool.get(i);
+			//freePage(fr.getPageId(), 1);	
 			if (fr.getPinCount() == 0) {
 				if(fr.getDirty()==1) {
 					DiskManager.getInstance().Writepage(fr.getPageId(), fr.getBuffer());
@@ -75,8 +77,10 @@ public class BufferManager {
 			if (fr.getPageId().equals(pageId)) {
 				fr.decrementerPin();
 				fr.setDirty(valdirty);
+				return;
 			}
 		}
+		System.out.println("pas trouve pour free");
 	}
 	
 	
