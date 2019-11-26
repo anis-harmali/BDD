@@ -44,22 +44,24 @@ public class HeapFile {
 
 	public PageId getFreeDataPageId() throws IOException {// ok
 		int idfichier = reldef.getFileIdx();
-		PageId pageid = new PageId(idfichier, 0);
+		PageId pageid = new PageId(0, idfichier);
 		ByteBuffer b = buffermanager.getPage(pageid);
 		b.position(0);
 		int nbrepages = b.getInt();
 		for (int i = 0; i < nbrepages; i++) {
 			if (b.getInt() > 0) {
-
+				buffermanager.freePage(pageid, 1);
 				return new PageId(i+1, this.reldef.getFileIdx());
 			}
 		}
-
+		buffermanager.freePage(pageid, 1);
 		return null;
 	}
 
 	public Rid writeRecordToDataPage(Record record, PageId pageid) throws IOException {// ok
 		ByteBuffer page = buffermanager.getPage(pageid);
+		PageId hd = new PageId(0, pageid.getFileIdx());
+		ByteBuffer buff = buffermanager.getPage(hd);
 		int nbreslots = reldef.getSlotCount();
 		boolean isfind = false;
 		page.position(0);
@@ -73,6 +75,13 @@ public class HeapFile {
 		page.put(position , (byte) 1);
 		record.WriteToBuffer(page, reldef.getSlotCount() + position * reldef.getRecordSize());
 		buffermanager.freePage(pageid, 1);
+		
+		buff.position(pageid.getPageIdx()*4);
+		int crt = buff.getInt();
+		buff.position(pageid.getPageIdx()*4);
+		buff.putInt(crt-1);
+		buffermanager.freePage(hd, 1);
+		
 		return new Rid(pageid, reldef.getSlotCount());
 	}
 
@@ -98,7 +107,6 @@ public class HeapFile {
 		PageId dpId = getFreeDataPageId();
 		if (dpId == null) {
 			dpId = addDataPage();
-
 		}
 		return rid = writeRecordToDataPage(record, dpId);
 
