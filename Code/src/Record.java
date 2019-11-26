@@ -12,6 +12,10 @@ public class Record {
 		values = new ArrayList<String>();
 	}
 	
+	public RelDef getReldef() {
+		return reldef;
+	}
+
 	public Record(RelDef reldef) {
 		this.reldef = reldef;
 		values = new ArrayList<String>();
