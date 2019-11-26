@@ -3,6 +3,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +11,7 @@ public class DBManager {
 	private static DBManager INSTANCE;
 	private List<String> types = new ArrayList<String>();
 	FileManager filemanager = FileManager.getInstance();
+	BufferManager buffermanager = BufferManager.getInstance();
 
 	// ff
 	private DBManager() {
@@ -80,7 +82,7 @@ public class DBManager {
 				recordSize += 2 * valeur;
 			}
 		}
-		int slotCount = Constants.pageSize / (recordSize+1);
+		int slotCount = Constants.pageSize / (recordSize + 1);
 		int fileIdx = DBDef.getInstance().getCompteur();
 
 		RelDef reldef = new RelDef(nom, nbcol, types, fileIdx, recordSize, slotCount);
@@ -166,13 +168,12 @@ public class DBManager {
 		String nomRel = commande[1];
 		int indiceCol = Integer.valueOf(commande[2]);
 		String valeur = commande[3];
-		ArrayList<Record> listederecord = new ArrayList<Record>();
-		listederecord.addAll(filemanager.SelectFromRelation(nomRel, indiceCol, valeur));
-		int x = listederecord.size();
-		for (int i = 0; i < listederecord.size(); i++) {
-			listederecord.remove(i);
-
+		ArrayList<Record> listederecord = filemanager.SelectFromRelation(nomRel, indiceCol-1, valeur);
+		for (int i = 0; i < filemanager.getHeapFiles().size();i++) {
+			if (filemanager.getHeapFiles().get(i).getReldef().getNom().equals(nomRel)) {
+				
+			}
+			System.out.println("Total records effacés : " + listederecord.size());
 		}
-		System.out.println("Total records effacés : " + x);
 	}
 }
