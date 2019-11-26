@@ -1,12 +1,12 @@
 import java.io.*;
 public class Saisie {
-	//Méthodes
+	//MÃ©thodes
 	public static String lireChaine(String message){
 	 	String ligne = null;
 	 	try{
-	 		//conversion d'un flux binaire en un flux de caractères (caractères Unicode)
+	 		//conversion d'un flux binaire en un flux de caractÃ¨res (caractÃ¨res Unicode)
 	 		InputStreamReader isr = new InputStreamReader(System.in);
-	 		//construction d'un tampon pour optimiser la lecture du flux de caractères
+	 		//construction d'un tampon pour optimiser la lecture du flux de caractÃ¨res
 	 		BufferedReader br = new BufferedReader(isr);
 	 		System.out.print(message);
 	 		// lecture d'une ligne
