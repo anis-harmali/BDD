@@ -72,6 +72,10 @@ public class FileManager {
 		return listederecord;
 	}
 
+	public ArrayList<HeapFile> getHeapFiles() {
+		return heapFiles;
+	}
+
 	public void raz() throws IOException {
 		heapFiles.clear();
 	}
