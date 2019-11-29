@@ -191,8 +191,10 @@ public class DBManager {
 		int indice_colonne2 = Integer.valueOf(commande[4]) - 1;
 		List<Record> array = new ArrayList<Record>();
 		array = filemanager.join(nomRelation1, nomRelation2, indice_colonne1, indice_colonne2);
+		for(int i=0;i<array.size();i++) {
+			System.out.print(array.get(i));
+		}
 		
-		System.out.print(array);
 		System.out.println();
 
 	}
