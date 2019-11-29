@@ -80,4 +80,43 @@ public class FileManager {
 		heapFiles.clear();
 	}
 
+	public ArrayList<Record> join(String nomRelation1, String nomRelation2, int indice_colonne1, int indice_colonne2)
+			throws IOException {
+		ArrayList<PageId> listPage = new ArrayList<PageId>();
+		ArrayList<PageId> listPage1 = new ArrayList<PageId>();
+		ArrayList listefinale = new ArrayList();
+		HeapFile b = null;
+		HeapFile c = null;
+		ArrayList<Record> listRecords = new ArrayList<Record>();
+		for (int i = 0; i < heapFiles.size(); i++) {
+			if (heapFiles.get(i).getReldef().getNom().equals(nomRelation1)) {
+				b = heapFiles.get(i);
+				listPage.add(heapFiles.get(i).getFreeDataPageId());
+			}
+			if (heapFiles.get(i).getReldef().getNom().equals(nomRelation2)) {
+				c = heapFiles.get(i);
+				listPage1.add(heapFiles.get(i).getFreeDataPageId());
+			}
+		}
+		for (int j = 0; j < listPage.size(); j++) {
+			ArrayList<Record> re = b.getRecordsInDataPage(listPage.get(j));
+			for (int k = 0; k < listPage1.size(); k++) {
+				ArrayList<Record> r = c.getRecordsInDataPage(listPage1.get(k));
+				for (int i = 0; i < re.size(); i++) {
+					for (int x = 0; x < r.size(); x++) {
+						if ((re.get(i).getValues().get(indice_colonne1)).equals(r.get(x).getValues().get(indice_colonne2))) {
+							ArrayList liste = new ArrayList();
+							liste.addAll(re.get(i).getValues());
+							liste.addAll(r.get(x).getValues());
+							listefinale.add(liste);
+						}
+						
+					}
+				}
+			}
+		}
+
+		return listefinale;
+
+	}
 }
