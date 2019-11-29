@@ -64,6 +64,9 @@ public class DBManager {
 		case "insertall":
 			insertAll(tab);
 			break;
+		case "join":
+			join(tab);
+			break;
 		default:
 			throw new IllegalArgumentException("Unexpected value: " + tab[0]);
 		}
@@ -168,12 +171,29 @@ public class DBManager {
 		String nomRel = commande[1];
 		int indiceCol = Integer.valueOf(commande[2]);
 		String valeur = commande[3];
-		ArrayList<Record> listederecord = filemanager.SelectFromRelation(nomRel, indiceCol-1, valeur);
-		for (int i = 0; i < filemanager.getHeapFiles().size();i++) {
-			if (filemanager.getHeapFiles().get(i).getReldef().getNom().equals(nomRel)) {
-				
+		int compt = 0;
+		int file = filemanager.SelectAllFromRelation(nomRel).get(0).getReldef().getFileIdx();
+		PageId headerpage = new PageId(0, file);
+		ByteBuffer buff = buffermanager.getPage(headerpage);
+		for (int j = 0; j < filemanager.getHeapFiles().size(); j++) {
+			if (filemanager.getHeapFiles().get(j).getReldef().getNom().equals(nomRel)) {
+				compt = filemanager.getHeapFiles().get(j).deleterecords(indiceCol, valeur);
 			}
-			System.out.println("Total records effacés : " + listederecord.size());
 		}
+		buffermanager.freePage(headerpage, 1);
+		System.out.println("Total records effacés : " + compt);
+	}
+
+	public void join(String[] commande) throws IOException {
+		String nomRelation1 = commande[1];
+		String nomRelation2 = commande[2];
+		int indice_colonne1 = Integer.valueOf(commande[3]) - 1;
+		int indice_colonne2 = Integer.valueOf(commande[4]) - 1;
+		List<Record> array = new ArrayList<Record>();
+		array = filemanager.join(nomRelation1, nomRelation2, indice_colonne1, indice_colonne2);
+		
+		System.out.print(array);
+		System.out.println();
+
 	}
 }
