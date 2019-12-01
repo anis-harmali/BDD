@@ -174,7 +174,6 @@ public class DBManager {
 		int compt = 0;
 		int file = filemanager.SelectAllFromRelation(nomRel).get(0).getReldef().getFileIdx();
 		PageId headerpage = new PageId(0, file);
-		ByteBuffer buff = buffermanager.getPage(headerpage);
 		for (int j = 0; j < filemanager.getHeapFiles().size(); j++) {
 			if (filemanager.getHeapFiles().get(j).getReldef().getNom().equals(nomRel)) {
 				compt = filemanager.getHeapFiles().get(j).deleterecords(indiceCol, valeur);
