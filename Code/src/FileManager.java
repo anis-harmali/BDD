@@ -80,7 +80,7 @@ public class FileManager {
 		heapFiles.clear();
 	}
 
-	public ArrayList<Record> join(String nomRelation1, String nomRelation2, int indice_colonne1, int indice_colonne2)
+	public ArrayList<ArrayList<String>> join(String nomRelation1, String nomRelation2, int indice_colonne1, int indice_colonne2)
 			throws IOException {
 		ArrayList<PageId> listPage = new ArrayList<PageId>();
 		ArrayList<PageId> listPage1 = new ArrayList<PageId>();
@@ -91,11 +91,11 @@ public class FileManager {
 		for (int i = 0; i < heapFiles.size(); i++) {
 			if (heapFiles.get(i).getReldef().getNom().equals(nomRelation1)) {
 				b = heapFiles.get(i);
-				listPage.add(heapFiles.get(i).getFreeDataPageId());
+				listPage=heapFiles.get(i).getAllDataPage();
 			}
 			if (heapFiles.get(i).getReldef().getNom().equals(nomRelation2)) {
 				c = heapFiles.get(i);
-				listPage1.add(heapFiles.get(i).getFreeDataPageId());
+				listPage1=(heapFiles.get(i).getAllDataPage());
 			}
 		}
 		for (int j = 0; j < listPage.size(); j++) {
@@ -115,7 +115,7 @@ public class FileManager {
 				}
 			}
 		}
-
+		
 		return listefinale;
 
 	}
