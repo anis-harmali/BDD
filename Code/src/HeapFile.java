@@ -109,8 +109,8 @@ public class HeapFile {
 				Record record = new Record();
 				record.setReldef(this.reldef);
 				record.readFromBuffer(buffer, reldef.getSlotCount() + i * reldef.getRecordSize());
-				if (record.getValues().get(indicecol-1).equals(valeurfiltre)) {
-					buffer.put(i,(byte)0);
+				if (record.getValues().get(indicecol - 1).equals(valeurfiltre)) {
+					buffer.put(i, (byte) 0);
 					cptrec++;
 				}
 			}
@@ -156,6 +156,22 @@ public class HeapFile {
 		buffermanager.freePage(headerPageId, 1);
 		return cptrec;
 	}
-	
-	
+
+	public ArrayList<PageId> getAllDataPage() throws IOException {
+		ArrayList<PageId> arrayPageid = new ArrayList<PageId>();
+		int fildx = reldef.getFileIdx();
+		PageId head = new PageId(0, fildx);
+		ByteBuffer header = buffermanager.getPage(head);
+		int x = header.getInt(0);
+		buffermanager.freePage(head, 1);
+		for (int i = 0; i < x; i++) {
+			PageId page = new PageId(i + 1, fildx);
+			arrayPageid.add(page);
+
+		}
+
+
+		return arrayPageid;
+	}
+
 }
