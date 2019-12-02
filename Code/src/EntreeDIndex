@@ -1,0 +1,6 @@
+
+public class EntreeDIndex {
+	private int cle;
+	private Noeud filspointé;
+	
+}
