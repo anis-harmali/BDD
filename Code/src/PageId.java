@@ -19,4 +19,12 @@ public class PageId {
 	boolean equals(PageId id2) {
 			return this.fileIdx == id2.fileIdx && this.pageIdx == id2.pageIdx;
 	}
+
+	public void setFileIdx(int fileIdx) {
+		this.fileIdx = fileIdx;
+	}
+
+	public void setPageIdx(int pageIdx) {
+		this.pageIdx = pageIdx;
+	}
 }
