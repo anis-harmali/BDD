@@ -1,0 +1,36 @@
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class Arbre {
+	private Noeud racine;
+	private int ordre;
+
+	public Arbre(Noeud racine, int ordre) {
+		this.racine = racine;
+		this.ordre = ordre;
+	}
+	
+	public ArrayList<Integer> Recup(String relname, int indice) throws IOException {
+		ArrayList<Integer> liste = null;
+		ArrayList<Record> listederecord = null;
+		for (int i = 0; i < FileManager.getInstance().getHeapFiles().size(); i++) {
+			if (FileManager.getInstance().getHeapFiles().get(i).getReldef().getNom().equals(relname)) {
+				listederecord = FileManager.getInstance().getHeapFiles().get(i).getAllRecords();
+			}
+			for (int j = 0; j < listederecord.size(); j++) {
+				liste.add(Integer.parseInt(listederecord.get(j).getValues().get(indice)));
+			}
+	
+		}
+		return liste;
+	}
+	
+	public void bulkload(ArrayList<Integer> liste) {
+		Collections.sort(liste);
+		for(int i=0;i<liste.size();i++) {
+			liste.get(i);
+		}
+	}
+
+}
