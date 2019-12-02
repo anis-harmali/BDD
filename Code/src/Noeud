@@ -1,0 +1,9 @@
+
+public class Noeud {
+	private Noeud parent;
+
+	public Noeud(Noeud parent) {
+		this.parent = parent;
+	}
+
+}
