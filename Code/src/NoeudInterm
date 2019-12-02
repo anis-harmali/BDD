@@ -1,0 +1,13 @@
+import java.util.ArrayList;
+
+public class NoeudInterm extends Noeud {
+
+	private Noeud pointeur;
+	private ArrayList<EntreeDIndex> listeentreeindex;
+
+	public NoeudInterm(Noeud pointeur, ArrayList<EntreeDIndex> listeentreeindex) {
+		super(pointeur);
+		this.listeentreeindex = listeentreeindex;
+	}
+
+}
