@@ -13,7 +13,7 @@ public class Feuille extends Noeud {
 		this.listeentred=listeentred;
 	}
 
-	public void setListeentred(EntreeDeDonnee ent) {
+	public void rajoutListeentred(EntreeDeDonnee ent) {
 		this.listeentred.add(ent);
 	}
 
