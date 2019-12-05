@@ -3,6 +3,8 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.TreeMap;
 
 public class HeapFile {
 	private RelDef reldef;
@@ -17,6 +19,12 @@ public class HeapFile {
 		return reldef;
 	}
 
+	/**
+	 * cree le fichier sur le disque correspondant au heapfile et ajoute une header
+	 * page vide( remplie de 0) a ce fichier
+	 * 
+	 * @throws IOException
+	 */
 	public void createNewOnDisk() throws IOException {
 		diskmanager.CreateFile(reldef.getFileIdx());
 		PageId pid = diskmanager.AddPage(reldef.getFileIdx());
@@ -29,6 +37,12 @@ public class HeapFile {
 		buffermanager.freePage(pid, 1);
 	}
 
+	/**
+	 * ajoute une page de donnÃ©ee
+	 * 
+	 * @return le pageid de la page
+	 * @throws IOException
+	 */
 	public PageId addDataPage() throws IOException {// ok
 		PageId pi = diskmanager.AddPage(reldef.getFileIdx());
 		int nbpages = pi.getPageIdx();
@@ -42,6 +56,12 @@ public class HeapFile {
 		return pi;
 	}
 
+	/**
+	 * recupere le pageid d'une page de donnÃ©e ayant encore des pages libres
+	 * 
+	 * @return le pageid correspondant
+	 * @throws IOException
+	 */
 	public PageId getFreeDataPageId() throws IOException {// ok
 		int idfichier = reldef.getFileIdx();
 		PageId pageid = new PageId(0, idfichier);
@@ -58,6 +78,15 @@ public class HeapFile {
 		return null;
 	}
 
+	/**
+	 * Ecrit un record dans la page de donnÃ©e identifiÃ©e par le pageid donnÃ©e en
+	 * parametre
+	 * 
+	 * @param record le record Ã  ecrire
+	 * @param pageid le pageid
+	 * @return le rid de la page de donnÃ©e
+	 * @throws IOException
+	 */
 	public Rid writeRecordToDataPage(Record record, PageId pageid) throws IOException {// ok
 		ByteBuffer page = buffermanager.getPage(pageid);
 		PageId hd = new PageId(0, pageid.getFileIdx());
@@ -84,6 +113,14 @@ public class HeapFile {
 		return new Rid(pageid, reldef.getSlotCount());
 	}
 
+	/**
+	 * recupere la liste des records stockÃ©e dans la page donnÃ©e par le pageid en
+	 * parametre
+	 * 
+	 * @param pageId le pageid correspondant
+	 * @return la liste complÃ©tÃ©e
+	 * @throws IOException
+	 */
 	public ArrayList<Record> getRecordsInDataPage(PageId pageId) throws IOException {
 		ArrayList<Record> records = new ArrayList<Record>();
 		ByteBuffer buffer = buffermanager.getPage(pageId);
@@ -100,6 +137,16 @@ public class HeapFile {
 		return records;
 	}
 
+	/**
+	 * Supprime les record d'une relation ayant une valeur donnÃ©e Ã  une colonne
+	 * donnÃ©e
+	 * 
+	 * @param pageId       le pageid de la page ou se trouve la relation
+	 * @param indicecol    l'indice de la colonne du record
+	 * @param valeurfiltre valeur de la colonne
+	 * @return le nombre de record effacÃ©
+	 * @throws IOException
+	 */
 	public int deleteRecordsInDataPage(PageId pageId, int indicecol, String valeurfiltre) throws IOException {
 		int cptrec = 0;
 		ByteBuffer buffer = buffermanager.getPage(pageId);
@@ -119,6 +166,13 @@ public class HeapFile {
 		return cptrec;
 	}
 
+	/**
+	 * Insertion d'un record
+	 * 
+	 * @param record le record Ã  inserer
+	 * @return un rid
+	 * @throws IOException
+	 */
 	public Rid InsertRecord(Record record) throws IOException {
 		record.setReldef(this.reldef);
 		Rid rid;
@@ -170,8 +224,38 @@ public class HeapFile {
 
 		}
 
-
 		return arrayPageid;
+	}
+
+	public TreeMap<Integer, ArrayList<Rid>> recup(int indicecol) throws IOException {
+		ArrayList<Record> records = new ArrayList<Record>();
+		TreeMap<Integer, ArrayList<Rid>> map = new TreeMap<>();
+		PageId headerpage = new PageId(0, reldef.getFileIdx());
+		ByteBuffer header = buffermanager.getPage(headerpage);
+		int nb = header.getInt(0);
+		buffermanager.freePage(headerpage, 1);
+		for (int j = 1; j <= nb; j++) {
+			PageId pageid = new PageId(j,reldef.getFileIdx());
+			ByteBuffer buffer = buffermanager.getPage(pageid);
+			buffer.position(0);
+			for (int i = 0; i < reldef.getSlotCount(); i++) {
+				if (buffer.get(i) == (byte) 1) {
+					Record record = new Record();
+					record.setReldef(this.reldef);
+					record.readFromBuffer(buffer, reldef.getSlotCount() + i * reldef.getRecordSize());
+					if (map.containsKey(record.getValues().get(indicecol - 1))) {
+						map.get(record.getValues().get(indicecol - 1)).add(new Rid(pageid, i));
+					} else {
+						ArrayList<Rid> listrid = new ArrayList<>();
+						listrid.add(new Rid(pageid, i));
+						map.put(Integer.parseInt(record.getValues().get(indicecol - 1)), listrid);
+					}
+				}
+				buffermanager.freePage(pageid, 0);
+			}
+		}
+		return map;
+
 	}
 
 }
