@@ -21,7 +21,7 @@ public class Arbre {
 		for (int cle : map.keySet()) {
 			ArrayList<Rid> lst = map.get(cle);
 			EntreeDeDonnee ent = new EntreeDeDonnee(cle, lst);
-			feuillecourante.setListeentred(ent);
+			feuillecourante.rajoutListeentred(ent);
 			if (feuillecourante.estPleine(this.ordre)) {
 				listedefeuilles.add(feuillecourante);
 				feuillecourante = new Feuille(null);
