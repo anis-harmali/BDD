@@ -179,7 +179,7 @@ public class DBManager {
 			}
 		}
 		buffermanager.freePage(headerpage, 1);
-		System.out.println("Total records effacÃ©s : " + compt);
+		System.out.println("Total records effacés : " + compt);
 	}
 
 	public void join(String[] commande) throws IOException {
