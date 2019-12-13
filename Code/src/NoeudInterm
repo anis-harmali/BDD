@@ -10,4 +10,43 @@ public class NoeudInterm extends Noeud {
 		this.listeentreeindex = listeentreeindex;
 	}
 
+	public Noeud getPointeur() {
+		return pointeur;
+	}
+
+	public void setPointeur(Noeud pointeur) {
+		this.pointeur = pointeur;
+	}
+
+	public ArrayList<EntreeDIndex> getListeentreeindex() {
+		return listeentreeindex;
+	}
+
+	public void setListeentreeindex(ArrayList<EntreeDIndex> listeentreeindex) {
+		this.listeentreeindex = listeentreeindex;
+	}
+	
+	private NoeudInterm split() {
+		
+		
+	}
+	
+	public NoeudInterm rajouterED(EntreeDIndex entreeindex) {
+		listeentreeindex.add(entreeindex);
+		entreeindex.getFilspointÃ©().setParent(this);
+		if(listeentreeindex.size()==2*monArbre.getOrdre()+1)
+			return this.split();
+		else return this;
+	}
+	
+	
+
+	public NoeudInterm accrocherfeuille(Feuille feuille) {
+		EntreeDIndex ed= new EntreeDIndex(feuille.getListeentred().get(0).getCle(), feuille);
+		return rajouterED(ed);
+		
+		
+	}
+	
+	
 }
