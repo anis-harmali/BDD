@@ -6,29 +6,32 @@ import java.util.Scanner;
 
 public class Main {
 
-	public static void main(String[] args) throws IOException{
+	public static void main(String[] args) throws IllegalArgumentException, IOException {
 		// TODO Auto-generated method stub
 		Constants.chemin = args[0];
-		ArrayList<Integer> list= new ArrayList<>();
+		ArrayList<Integer> list = new ArrayList<>();
 		DBManager dbmanager = DBManager.getInstance();
-		dbmanager.Clean();
+		// dbmanager.Clean();
 		Scanner s = new Scanner(System.in);
-		String commande="";
-		boolean b=true;
-		do {
-			System.out.println("Entrez votre commande");
-			commande=s.nextLine();
-			String[] comm=commande.split(" ");
+		String commande = "";
+		boolean b = true;
 		
-		if(comm[0].equals("exit")) {
-			dbmanager.finish();
-			b=false;
-		}
-		else {
-			dbmanager.ProcessCommand(commande);
-		}
-		}while(b==true);
-
+			do {
+				System.out.println("Entrez votre commande");
+				commande = s.nextLine();
+				String[] comm = commande.split(" ");
+				if (comm[0].equals("exit")) {
+					dbmanager.finish();
+					break;
+				} else {
+					try {
+					dbmanager.ProcessCommand(commande);
+					} catch (IllegalArgumentException i) {
+						System.out.println("Mauvaise saisie");
+					}
+				}
+			} while (b == true);
+		
 	}
 
 }
