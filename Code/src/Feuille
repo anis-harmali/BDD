@@ -4,6 +4,10 @@ public class Feuille extends Noeud {
 	private ArrayList<EntreeDeDonnee> listeentred;
 	
 
+	public ArrayList<EntreeDeDonnee> getListeentred() {
+		return listeentred;
+	}
+
 	public Feuille(Noeud parent) {
 		super(parent);
 	}
