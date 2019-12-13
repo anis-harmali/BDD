@@ -8,5 +8,13 @@ public class EntreeDeDonnee {
 		this.cle = cle;
 		this.listederid = listederid;
 	}
+
+	public int getCle() {
+		return cle;
+	}
+
+	public ArrayList<Rid> getListederid() {
+		return listederid;
+	}
 	
 }
