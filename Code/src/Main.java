@@ -11,7 +11,7 @@ public class Main {
 		Constants.chemin = args[0];
 		ArrayList<Integer> list= new ArrayList<>();
 		DBManager dbmanager = DBManager.getInstance();
-		//dbmanager.Clean();
+		dbmanager.Clean();
 		Scanner s = new Scanner(System.in);
 		String commande="";
 		boolean b=true;
@@ -21,9 +21,8 @@ public class Main {
 			String[] comm=commande.split(" ");
 		
 		if(comm[0].equals("exit")) {
-			b=false;
 			dbmanager.finish();
-			
+			b=false;
 		}
 		else {
 			dbmanager.ProcessCommand(commande);
