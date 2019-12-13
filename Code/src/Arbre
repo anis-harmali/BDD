@@ -18,6 +18,7 @@ public class Arbre {
 	public ArrayList<Feuille> recupFeuilles(TreeMap<Integer, ArrayList<Rid>> map) {
 		ArrayList<Feuille> listedefeuilles = null;
 		Feuille feuillecourante = new Feuille(null);
+		feuillecourante.setArbre(this);
 		for (int cle : map.keySet()) {
 			ArrayList<Rid> lst = map.get(cle);
 			EntreeDeDonnee ent = new EntreeDeDonnee(cle, lst);
@@ -25,6 +26,7 @@ public class Arbre {
 			if (feuillecourante.estPleine(this.ordre)) {
 				listedefeuilles.add(feuillecourante);
 				feuillecourante = new Feuille(null);
+				feuillecourante.setArbre(this);
 			}
 		}
 		if (!feuillecourante.estVide(this.ordre)) {
@@ -33,6 +35,15 @@ public class Arbre {
 		return listedefeuilles;
 	}
 
-	
-	
+	public void ConstruireArbre(ArrayList<Feuille> listedefeuilles) {
+		ArrayList<EntreeDeDonnee> listeed = new ArrayList<>();
+		listeed.add(new)
+		NoeudInterm ni = new NoeudInterm(listedefeuilles.get(0),new  )
+		ni.setArbre(this);
+	}
+
+	public int getOrdre() {
+		return ordre;
+	}
+
 }
