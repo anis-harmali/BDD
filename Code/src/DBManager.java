@@ -189,10 +189,10 @@ public class DBManager {
 		int indice_colonne2 = Integer.valueOf(commande[4]) - 1;
 		ArrayList<ArrayList<String>> array = new ArrayList<>();
 		array = filemanager.join(nomRelation1, nomRelation2, indice_colonne1, indice_colonne2);
-		System.out.println("nombre de tuples : " + array.size());
 		for(int i=0;i<array.size();i++) {
 			System.out.println(array.get(i));
 		}
+		System.out.println("nombre de tuples : " + array.size());
 		System.out.println();
 
 	}
