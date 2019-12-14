@@ -179,7 +179,7 @@ public class DBManager {
 			}
 		}
 		buffermanager.freePage(headerpage, 1);
-		System.out.println("Total records effacÃ©s : " + compt);
+		System.out.println("Total records effacés : " + compt);
 	}
 
 	public void join(String[] commande) throws IOException {
@@ -189,7 +189,6 @@ public class DBManager {
 		int indice_colonne2 = Integer.valueOf(commande[4]) - 1;
 		ArrayList<ArrayList<String>> array = new ArrayList<>();
 		array = filemanager.join(nomRelation1, nomRelation2, indice_colonne1, indice_colonne2);
-		System.out.println("nombre de tuples : " + array.size());
 		for(int i=0;i<array.size();i++) {
 			System.out.println(array.get(i));
 		}
