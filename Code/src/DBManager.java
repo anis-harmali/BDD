@@ -12,7 +12,6 @@ public class DBManager {
 	FileManager filemanager = FileManager.getInstance();
 	BufferManager buffermanager = BufferManager.getInstance();
 
-	// ff
 	private DBManager() {
 
 	}
@@ -94,13 +93,13 @@ public class DBManager {
 
 	public void Clean() throws IOException {
 		File repertoire = new File(Constants.chemin);
+		BufferManager.getInstance().raz();
+		filemanager.raz();
+		DBDef.getInstance().raz();
 		File[] fichiers = repertoire.listFiles();
 		for (int i = 0; i < fichiers.length; i++) {
 			fichiers[i].delete();
 		}
-		BufferManager.getInstance().raz();
-		filemanager.raz();
-		DBDef.getInstance().raz();
 	}
 
 	public void insert(String[] commande) throws IOException {
@@ -179,7 +178,7 @@ public class DBManager {
 			}
 		}
 		buffermanager.freePage(headerpage, 1);
-		System.out.println("Total records effacés : " + compt);
+		System.out.println("Total records effacÃ©s : " + compt);
 	}
 
 	public void join(String[] commande) throws IOException {
@@ -189,7 +188,7 @@ public class DBManager {
 		int indice_colonne2 = Integer.valueOf(commande[4]) - 1;
 		ArrayList<ArrayList<String>> array = new ArrayList<>();
 		array = filemanager.join(nomRelation1, nomRelation2, indice_colonne1, indice_colonne2);
-		for(int i=0;i<array.size();i++) {
+		for (int i = 0; i < array.size(); i++) {
 			System.out.println(array.get(i));
 		}
 		System.out.println("nombre de tuples : " + array.size());
