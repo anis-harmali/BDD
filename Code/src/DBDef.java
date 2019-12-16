@@ -1,9 +1,11 @@
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,12 +50,22 @@ public class DBDef implements Serializable {
 		
 	public void finish() throws IOException {
 		File saveFile=new File(Constants.chemin+"/Catalog.def");
+		try {
+			FileOutputStream file= new FileOutputStream(saveFile);
+			ObjectOutputStream out= new ObjectOutputStream(file);
+			out.writeObject(DBDef.getInstance());
+			out.close();
+			file.close();
+		}catch(ObjectStreamException o) {
 			
-		FileOutputStream file= new FileOutputStream(saveFile);
-		ObjectOutputStream out= new ObjectOutputStream(file);
-		out.writeObject(DBDef.getInstance());
-		out.close();
-		file.close();
+		}
+		catch(FileNotFoundException f) {
+			f.printStackTrace();
+		}
+		catch(IOException e) {
+			e.printStackTrace();
+		}
+		
 	}
 		
 	public void addRelation(RelDef a) {
