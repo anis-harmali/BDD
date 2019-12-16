@@ -11,7 +11,7 @@ public class Main {
 		Constants.chemin = args[0];
 		ArrayList<Integer> list = new ArrayList<>();
 		DBManager dbmanager = DBManager.getInstance();
-		// dbmanager.Clean();
+		dbManager.Init();
 		Scanner s = new Scanner(System.in);
 		String commande = "";
 		boolean b = true;
