@@ -1,6 +1,6 @@
 import java.util.List;
 
-public class RelDef {
+public class RelDef implements Serializable {
 	private String nom;
 	private int nbcol;
 	private List<String> type;
