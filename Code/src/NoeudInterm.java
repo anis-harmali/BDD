@@ -31,22 +31,22 @@ public class NoeudInterm extends Noeud {
 		
 	//}
 	
-	public NoeudInterm rajouterED(EntreeDIndex entreeindex) {
+	/*public NoeudInterm rajouterED(EntreeDIndex entreeindex) {
 		listeentreeindex.add(entreeindex);
 		entreeindex.getFilspointe().setParent(this);
 		if(listeentreeindex.size()==2*monArbre.getOrdre()+1)
 			return this.split();
 		else return this;
-	}
+	}*/
 	
 	
 
-	public NoeudInterm accrocherfeuille(Feuille feuille) {
+	/*public NoeudInterm accrocherfeuille(Feuille feuille) {
 		EntreeDIndex ed= new EntreeDIndex(feuille.getListeentred().get(0).getCle(), feuille);
 		return rajouterED(ed);
 		
 		
 	}
-	
+	*/
 	
 }
