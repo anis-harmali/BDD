@@ -15,6 +15,7 @@ public class Arbre {
 		this.ordre = ordre;
 	}
 
+	@SuppressWarnings("null")
 	public ArrayList<Feuille> recupFeuilles(TreeMap<Integer, ArrayList<Rid>> map) {
 		ArrayList<Feuille> listedefeuilles = null;
 		Feuille feuillecourante = new Feuille(null);
@@ -35,12 +36,12 @@ public class Arbre {
 		return listedefeuilles;
 	}
 
-	public void ConstruireArbre(ArrayList<Feuille> listedefeuilles) {
+	/*public void ConstruireArbre(ArrayList<Feuille> listedefeuilles) {
 		ArrayList<EntreeDeDonnee> listeed = new ArrayList<>();
 		listeed.add(new)
 		NoeudInterm ni = new NoeudInterm(listedefeuilles.get(0),new);
 		ni.setArbre(this);
-	}
+	}*/
 
 	public int getOrdre() {
 		return ordre;
