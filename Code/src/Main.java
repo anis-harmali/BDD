@@ -1,17 +1,12 @@
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class Main {
 
-	public static void main(String[] args) throws IllegalArgumentException, IOException {
-		// TODO Auto-generated method stub
+	public static void main(String[] args) throws IllegalArgumentException, IOException, ClassNotFoundException {
 		Constants.chemin = args[0];
-		ArrayList<Integer> list = new ArrayList<>();
 		DBManager dbmanager = DBManager.getInstance();
-		dbManager.Init();
+		dbmanager.init();
 		Scanner s = new Scanner(System.in);
 		String commande = "";
 		boolean b = true;
