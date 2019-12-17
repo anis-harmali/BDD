@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -36,15 +37,28 @@ public class DBDef implements Serializable {
 	}	
 		
 	public void init() throws IOException, ClassNotFoundException {
-		File saveFile=new File(Constants.chemin+"/Catalog.def");
+		File saveFile = new File(Constants.chemin + "/Catalog.def");
 		if (saveFile.exists()) {
-			FileInputStream file=new FileInputStream(saveFile);
-			ObjectInputStream in= new ObjectInputStream(file);
-			DBDef.INSTANCE=(DBDef) in.readObject();
-			in.close();
-			file.close();
-			}	
+			FileInputStream file;
+			ObjectInputStream in;
+			try {
+				file = new FileInputStream(saveFile);
+				in = new ObjectInputStream(file);
+				DBDef dbdef = (DBDef) in.readObject();
+
+				this.definition = dbdef.definition;
+				this.compteur = dbdef.compteur;
+				in.close();
+				file.close();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
 		}
+	}
 		
 	public void finish() throws IOException {
 		File saveFile=new File(Constants.chemin+"/Catalog.def");
