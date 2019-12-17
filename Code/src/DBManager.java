@@ -32,6 +32,7 @@ public class DBManager {
 
 	public void finish() throws IOException {
 		DBDef.getInstance().finish();
+		buffermanager.flushAll();
 	}
 
 	public void ProcessCommand(String commande) throws IOException {
