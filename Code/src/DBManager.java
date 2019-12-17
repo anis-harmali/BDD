@@ -142,6 +142,7 @@ public class DBManager {
 	public void selectall(String nomcommande) throws IOException {
 		ArrayList<Record> listederecord = new ArrayList<Record>();
 		listederecord = filemanager.SelectAllFromRelation(nomcommande);
+		try {
 		for (int i = 0; i < listederecord.size(); i++) {
 			for (int j = 0; j < listederecord.get(i).getValues().size(); j++) {
 				System.out.print(listederecord.get(i).getValues().get(j).toString() + " ; ");
@@ -149,7 +150,11 @@ public class DBManager {
 			System.out.println();
 		}
 		System.out.println("Total records : " + listederecord.size());
+		}catch(NullPointerException e) {
+			System.out.println("Aucun tuple pour la relation "+nomcommande);
+		}
 	}
+
 
 	public void select(String[] commande) throws IOException {
 		String nomRel = commande[1];
